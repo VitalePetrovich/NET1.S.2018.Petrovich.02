@@ -15,7 +15,7 @@ namespace TasksDay02.NUnitTest
         [TestCase(8, 15, 0, 0, ExpectedResult = 9)]
         [TestCase(8, 15, 3, 8, ExpectedResult = 120)]
         [TestCase(-4106, 22095, 4, 9, ExpectedResult = -4874)]
-        public int InsertNumber_nubmerInsertedInOtherNumber(int numberSource, int numberInsert, int i, int j)
+        public int InsertNumber_TheNumberInsertedInOtherNumber(int numberSource, int numberInsert, int i, int j)
             => InsertNumber(numberSource, numberInsert, i, j);
 
         [Test]

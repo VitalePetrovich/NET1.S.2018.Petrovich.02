@@ -21,14 +21,17 @@ namespace TasksDay02
         /// <param name="j">
         /// Insertion ends with this bit
         /// </param>
-        /// <returns></returns>
+        /// <returns>
+        /// New number.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Throws, when at least one of start or end bit are out of array.
+        /// </exception>>
         public static int InsertNumber(int numberSource, int numberInsert, int i, int j)
         {
             if (i > j)
             {
-                int temp = j;
-                j = i;
-                i = temp;
+                Swap(ref i, ref j);
             }
 
             if (j > 31 || i < 0)
@@ -37,11 +40,8 @@ namespace TasksDay02
             }
             
             numberInsert = numberInsert << i;
-            int mask = 0;
-            for (int k = i; k <= j; k++)
-            {
-                mask += (int)Math.Pow(2, k);
-            }
+
+            int mask = MaskGenerate(i, j);
             
             numberInsert = numberInsert & mask;
             numberInsert = numberInsert ^ numberSource;
@@ -51,95 +51,22 @@ namespace TasksDay02
             return numberSource;
         }
 
-        //Task2
-        private static T[] SubArray<T>(T[] sourceArr, int startIndex, int endIndex)
+        private static void Swap(ref int num1, ref int num2)
         {
-            T[] tempArr = new T[endIndex - startIndex + 1];
-            for (int i = startIndex, currIndex = 0; i <= endIndex; i++, currIndex++)
-            {
-                tempArr[currIndex] = sourceArr[i];
-            }
-
-            return tempArr;
+            int temp = num1;
+            num1 = num2;
+            num2 = temp;
         }
 
-        /// <summary>
-        /// Return largest element of the array.
-        /// </summary>
-        /// <param name="arr">
-        /// Array-source.
-        /// </param>
-        /// <returns></returns>
-        public static int MaxElement(int[] arr)
+        private static int MaskGenerate(int startBit, int endBit)
         {
-            if (arr.Length <= 1)
+            int mask = 0;
+            for (int k = startBit; k <= endBit; k++)
             {
-                return arr[0];
+                mask += (int)Math.Pow(2, k);
             }
 
-            int temp1 = MaxElement(SubArray(arr, 0, arr.Length / 2 - 1));
-            int temp2 = MaxElement(SubArray(arr, arr.Length / 2, arr.Length - 1));
-
-            return (temp1 > temp2)?temp1:temp2;
-        }
-
-        //Task3 (NOT FINISHED)
-        /// <summary>
-        /// Method finds index of element, the sums of elements to the right and left of which are equal.
-        /// </summary>
-        /// <param name="sourceArr">
-        /// Array-source.
-        /// </param>
-        /// <returns></returns>
-        public static int MiddleSum(double[] sourceArr)
-        {
-            int currIndex = sourceArr.Length / 2;
-            double sumLeft = SubArray(sourceArr, 0, currIndex - 1).Sum();
-            double sumRight = SubArray(sourceArr, currIndex + 1, sourceArr.Length - 1).Sum();
-
-            while (sumLeft != sumRight)
-            {
-                double diffBeforeMoving = sumRight - sumLeft;
-
-                if (currIndex < 1 || currIndex >= sourceArr.Length - 1)
-                {
-                    return -1;
-                }
-
-                if (sumLeft > sumRight)
-                {
-                    sumRight += sourceArr[currIndex--];
-                    sumLeft -= sourceArr[currIndex];
-                }
-                else
-                {
-                    sumLeft += sourceArr[currIndex++];
-                    sumRight -= sourceArr[currIndex];
-                }
-
-                if (diffBeforeMoving * (sumRight - sumLeft) < 0)
-                {
-                    return -1;
-                }
-            }
-
-            return currIndex;
-        }
-
-        //Task4
-        /// <summary>
-        /// Concatenation two string. Returns string with unique symbols.
-        /// </summary>
-        /// <param name="str1">
-        /// 1st string.
-        /// </param>
-        /// <param name="str2">
-        /// 2nd string.
-        /// </param>
-        /// <returns></returns>
-        public static string UniqConcat(string str1, string str2)
-        {
-            return new string((str1 + str2).Distinct().ToArray());
+            return mask;
         }
     }
 }
