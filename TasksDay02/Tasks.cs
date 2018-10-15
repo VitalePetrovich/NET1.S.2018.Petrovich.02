@@ -63,7 +63,7 @@ namespace TasksDay02
             int mask = 0;
             for (int k = startBit; k <= endBit; k++)
             {
-                mask += (int)Math.Pow(2, k);
+                mask += (int)Math.Pow(2, k); 
             }
 
             return mask;
